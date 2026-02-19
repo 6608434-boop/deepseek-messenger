@@ -109,18 +109,17 @@ class DeepSeekClient:
         ]
 
     async def health_check(self) -> bool:
-        """Check if DeepSeek API is accessible.
-
-        Returns:
-            True if API is healthy, False otherwise
-        """
+        """Check if DeepSeek API is accessible."""
         try:
-            # Простой тестовый запрос
-            response = await self.chat_completion(
+            # Асинхронный вызов
+            response = await self.client.chat.completions.create(
+                model="deepseek-chat",
                 messages=[{"role": "user", "content": "test"}],
-                temperature=0.1
+                temperature=0.1,
+                max_tokens=5  # ограничиваем, чтобы быстрее
             )
-            return bool(response)
+            # response уже не корутина, а объект
+            return bool(response and response.choices)
         except Exception as e:
             logger.error(f"DeepSeek health check failed: {e}")
             return False

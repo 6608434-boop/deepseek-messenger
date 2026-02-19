@@ -28,7 +28,7 @@ class DeepSeekClient:
             api_key: DeepSeek API key
             base_url: API base URL (default: DeepSeek official)
         """
-        self.client = openai.OpenAI(
+        self.client = openai.AsyncOpenAI(
             api_key=api_key,
             base_url=base_url
         )

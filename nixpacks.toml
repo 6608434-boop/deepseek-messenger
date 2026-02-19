@@ -3,9 +3,15 @@ nixPkgs = ["python311", "python311Packages.pip"]
 
 [phases.install]
 cmds = [
+  "cd backend",
+  "python -m venv /opt/venv",
+  "export PATH=/opt/venv/bin:$PATH",
   "pip install --upgrade pip",
-  "pip install -r backend/requirements.txt"
+  "pip install -r requirements.txt"
 ]
 
 [start]
-cmd = "cd backend && python -m uvicorn main:app --host 0.0.0.0 --port $PORT"
+cmd = "cd backend && export PATH=/opt/venv/bin:$PATH && python -m uvicorn main:app --host 0.0.0.0 --port $PORT"
+
+[phases.environment]
+PATH = "/opt/venv/bin:${PATH}"
